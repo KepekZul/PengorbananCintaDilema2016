@@ -1,0 +1,9 @@
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\bin\Debug\FaceDetection.exe.config
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.csprojResolveAssemblyReference.cache
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.Main.resources
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.Properties.Resources.resources
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.csproj.GenerateResource.Cache
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\bin\Debug\FaceDetection.exe
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\bin\Debug\FaceDetection.pdb
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.exe
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.pdb
