@@ -9,7 +9,12 @@ namespace FaceDetection
 {
     class lRgBy
     {
-        public Image GambarAsli { set; get; }
+        public Bitmap GambarSumber { set; get; }
+        private Bitmap GambarOlah;
+        private void initGambarOlah()
+        {
+            this.GambarOlah = new Bitmap(this.GambarSumber.Width, this.GambarSumber.Height);
+        }
         public int lOperation(double x){
             return Convert.ToInt32(105*Math.Log(x+1,10));
         }
@@ -27,8 +32,15 @@ namespace FaceDetection
             return lOperation(B) -((lOperation(G) + lOperation(R)) / 2);
         }
         public Image convertToiRgBy(){
+            initGambarOlah();
+            for (int iterX = 0; iterX < this.GambarSumber.Width; iterX++)
+            {
+                for (int iterY = 0; iterY < this.GambarSumber.Height; iterY++)
+                {
 
-            return this.GambarAsli;
+                }
+            }
+            return GambarOlah;
         }
     }
 }
