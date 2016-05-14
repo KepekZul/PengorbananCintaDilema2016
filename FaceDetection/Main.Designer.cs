@@ -31,20 +31,26 @@
             this.Asal = new System.Windows.Forms.PictureBox();
             this.Hasil = new System.Windows.Forms.PictureBox();
             this.pilihGambar = new System.Windows.Forms.Button();
+            this.Process = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Asal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Hasil)).BeginInit();
             this.SuspendLayout();
             // 
             // Asal
             // 
+            this.Asal.BackColor = System.Drawing.SystemColors.Control;
+            this.Asal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Asal.InitialImage = null;
             this.Asal.Location = new System.Drawing.Point(12, 12);
             this.Asal.Name = "Asal";
             this.Asal.Size = new System.Drawing.Size(300, 300);
+            this.Asal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Asal.TabIndex = 0;
             this.Asal.TabStop = false;
             // 
             // Hasil
             // 
+            this.Hasil.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Hasil.Location = new System.Drawing.Point(318, 12);
             this.Hasil.Name = "Hasil";
             this.Hasil.Size = new System.Drawing.Size(300, 300);
@@ -61,11 +67,22 @@
             this.pilihGambar.UseVisualStyleBackColor = true;
             this.pilihGambar.Click += new System.EventHandler(this.pilihGambar_Click);
             // 
+            // Process
+            // 
+            this.Process.Location = new System.Drawing.Point(117, 319);
+            this.Process.Name = "Process";
+            this.Process.Size = new System.Drawing.Size(98, 23);
+            this.Process.TabIndex = 3;
+            this.Process.Text = "Process Image";
+            this.Process.UseVisualStyleBackColor = true;
+            this.Process.Click += new System.EventHandler(this.Process_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(629, 386);
+            this.Controls.Add(this.Process);
             this.Controls.Add(this.pilihGambar);
             this.Controls.Add(this.Hasil);
             this.Controls.Add(this.Asal);
@@ -82,6 +99,7 @@
         private System.Windows.Forms.PictureBox Asal;
         private System.Windows.Forms.PictureBox Hasil;
         private System.Windows.Forms.Button pilihGambar;
+        private System.Windows.Forms.Button Process;
     }
 }
 

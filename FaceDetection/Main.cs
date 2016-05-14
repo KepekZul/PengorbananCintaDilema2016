@@ -33,5 +33,10 @@ namespace FaceDetection
                 Asal.SizeMode = PictureBoxSizeMode.Zoom;
             }
         }
+
+        private void Process_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
