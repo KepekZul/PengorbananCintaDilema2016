@@ -12,7 +12,8 @@ namespace FaceDetection
 {
     public partial class Main : Form
     {
-        Image GambarAsli;
+        Bitmap GambarAsli;
+        Bitmap GambarOlah;
         string PathGambar = "";
         public Main()
         {
@@ -23,12 +24,12 @@ namespace FaceDetection
         {
             OpenFileDialog Pilih = new OpenFileDialog();
             Pilih.FileName = "";
-            Pilih.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            Pilih.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
             Pilih.ShowDialog();
             PathGambar = Pilih.FileName;
             if (PathGambar != "")
             {
-                GambarAsli = Image.FromFile(PathGambar);
+                GambarAsli = (Bitmap) Image.FromFile(PathGambar);
                 Asal.Image = GambarAsli;
                 Asal.SizeMode = PictureBoxSizeMode.Zoom;
             }
@@ -36,7 +37,13 @@ namespace FaceDetection
 
         private void Process_Click(object sender, EventArgs e)
         {
-
+            this.GambarOlah = this.GambarAsli;
+            FaceDetection.lRgBy Olah = new lRgBy();
+            Olah.GambarSumber = this.GambarOlah;
+            Olah.convertToiRgBy();
+            this.GambarOlah = Olah.GambarOlah;
+            Hasil.Image = this.GambarOlah;
+            Hasil.SizeMode = PictureBoxSizeMode.Zoom;
         }
     }
 }
