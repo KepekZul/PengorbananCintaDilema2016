@@ -9,11 +9,17 @@ namespace FaceDetection
 {
     class lRgBy
     {
-        public Bitmap GambarSumber { set; get; }
+        private Bitmap GambarSumber { set; get; }
         private Bitmap GambarOlah;
+        private Double[,] L;
+        private Double[,] RG;
+        private Double[,] BY;
         private void initGambarOlah()
         {
             this.GambarOlah = new Bitmap(this.GambarSumber.Width, this.GambarSumber.Height);
+            L = new Double[this.GambarSumber.Width, this.GambarSumber.Height];
+            RG = new Double[this.GambarSumber.Width, this.GambarSumber.Height];
+            BY = new Double[this.GambarSumber.Width, this.GambarSumber.Height];
         }
         public int lOperation(double x){
             return Convert.ToInt32(105*Math.Log(x+1,10));
@@ -31,16 +37,18 @@ namespace FaceDetection
         {
             return lOperation(B) -((lOperation(G) + lOperation(R)) / 2);
         }
-        public Image convertToiRgBy(){
+        public void convertToiRgBy(){
             initGambarOlah();
             for (int iterX = 0; iterX < this.GambarSumber.Width; iterX++)
             {
                 for (int iterY = 0; iterY < this.GambarSumber.Height; iterY++)
                 {
-
+                    Color Warna = GambarSumber.GetPixel(iterX, iterY);
+                    this.L[iterX, iterY] = I(Warna.R, Warna.G, Warna.B);
+                    this.RG[iterX, iterY] = Rg(Warna.R, Warna.G);
+                    this.BY[iterX, iterY] = By(Warna.R, Warna.G, Warna.B);
                 }
             }
-            return GambarOlah;
         }
     }
 }
