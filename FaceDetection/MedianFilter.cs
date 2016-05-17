@@ -13,12 +13,12 @@ namespace FaceDetection
         private int sizeX;
         private int sizeY;
         private long  hitungMean(int x1, int x2, int y1, int y2){
-            long hasil;
+            long hasil=0;
             for (int konter = x1; konter < x2; konter++)
             {
                 for (int konter2 = x2; konter2 < x2; konter2++)
                 {
-                    hasil=
+                    hasil += Matrix[konter, konter2];
                 }
             }
             return hasil;
@@ -36,19 +36,21 @@ namespace FaceDetection
                 }
             }
         }
-        public void filterImage(int scale)
+        public void filterImage(int scale, int ratio)
         {
-            int median=0;
-            for (int konter = 0; konter <this.sizeX; konter += 4*scale)
+            int median=-1;
+            for (int konter = 0; konter <this.sizeX; konter += ratio*scale)
             {
-                for (int konter2 = 0; konter2 < this.sizeY; konter2 += 4 * scale)
+                for (int konter2 = 0; konter2 < this.sizeY; konter2 += ratio * scale)
                 {
-                    median = (int) hitungMean(konter, konter+(4*scale), konter2, konter2+(4*scale));
+                    if (median == -1)
+                    {
+                        median = (int)hitungMean(konter, konter + (ratio * scale), konter2, konter2 + (ratio * scale));
+                    }
                     median = median / (this.sizeX * this.sizeY);
+                    Matrix[konter, konter2] = median;
                 }
             }
-            
-
         }
     }
 }
