@@ -7,3 +7,6 @@ D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\bin\Debug\Fa
 D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\bin\Debug\FaceDetection.pdb
 D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.exe
 D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\FaceDetection.pdb
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.exe.config
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.exe
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.pdb

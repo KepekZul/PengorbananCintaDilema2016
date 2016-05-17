@@ -1,3 +1,4 @@
+http://web.archive.org/web/20090723024922/http:/geocities.com/jaykapur/face.html
 step:
 1. RGB -> IRgBy (Fleck &Forsyth)
 I=[L(R)+L(B)+L(G)]/3
