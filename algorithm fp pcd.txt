@@ -1,0 +1,51 @@
+step:
+1. RGB -> IRgBy (Fleck &Forsyth)
+I=[L(R)+L(B)+L(G)]/3
+Rg = L(R)-L(G)
+By=L(B)-[L(G)+L(R)]/2
+with:
+L(x)= 105*log10(x+1)
+
+2. Median Filter
+4*SCALE -> scale = (height+width)/320
+
+3. Texture Amplitude Map
+From Matrix I:
+a. Median Filter 8*SCALE
+b. absolute(filtered - original I matrix)
+c. Median Filter 12*SCALE
+
+4. Hue and saturation Filter
+a. Hue = (atan^2(Rg,By))
+b. Saturation = sqrt(Rg^2+By^2)
+
+5. marking the skin -> binar skin map (1 for skin, 0 otherwise)
+a. texture:<4.5, 120<160, 10<60
+b. texture:<4.5, 150<180, 20<80
+
+6. Dilation and disc structuring element
+a. add 8 connected pixel to edge
+b. executed 5 times recursively
+c. Checking against hue and saturation: ifpixel in 110<=hue<=180 and 0<=saturation<=130, value remains 1, 0 otherwise
+
+7. Closing Holes
+a. use Hole Filling Algorithm
+b. appllied with 3x3 disc structuring elemment
+c. multiplied by grayscale conversion of original image
+
+8. Histogram equalization -> darker getting darker, lighter otherwise
+
+9. Thresholding -> remove the darkest and the lightest
+a. set values betwwen 95 - 240 to 1. below or above to 0.
+
+10. Connected labeling
+a. generate :"positive" image showing distinct skin regions
+
+11. Get Negateive "Hole" Image
+a. get the negative image that showing holes
+b. from thresholded image, perform 4x4 disc structuring element. Result - original image. and showing only hole
+
+12. Detecting whthe faces
+a. removing holes int negative image that only 1 pixel in size. or remove all but the three largest hole object from negative image. 
+b. the hole object exapanded using dilation and multiplide by positive labeled image
+c. detect object which have hol;es. if holes, 
