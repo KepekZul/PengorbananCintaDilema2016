@@ -9,7 +9,7 @@ namespace FaceDetection
 {
     class lRgBy
     {
-        public Bitmap GambarSumber { set; get; }
+        public Bitmap GambarSumber;
         public Bitmap GambarOlah;
         public Double[,] L;
         public Double[,] RG;

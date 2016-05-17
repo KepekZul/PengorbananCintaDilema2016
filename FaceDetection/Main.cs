@@ -13,6 +13,7 @@ namespace FaceDetection
     public partial class Main : Form
     {
         Bitmap GambarAsli;
+        int Scale;
         Bitmap GambarOlah;
         string PathGambar = "";
         public Main()
@@ -32,6 +33,7 @@ namespace FaceDetection
                 GambarAsli = (Bitmap) Image.FromFile(PathGambar);
                 Asal.Image = GambarAsli;
                 Asal.SizeMode = PictureBoxSizeMode.Zoom;
+                Scale = (GambarAsli.Width + GambarAsli.Height) / 320;
             }
         }
 
