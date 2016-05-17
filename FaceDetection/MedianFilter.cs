@@ -12,17 +12,6 @@ namespace FaceDetection
         private int[,] Matrix;
         private int sizeX;
         private int sizeY;
-        private long  hitungMean(int x1, int x2, int y1, int y2){
-            long hasil=0;
-            for (int konter = x1; konter < x2; konter++)
-            {
-                for (int konter2 = x2; konter2 < x2; konter2++)
-                {
-                    hasil += Matrix[konter, konter2];
-                }
-            }
-            return hasil;
-        }
         public void setMatrix(int x, int y, int[,] source)
         {
             this.Matrix = new int[x, y];
@@ -36,19 +25,35 @@ namespace FaceDetection
                 }
             }
         }
-        public void filterImage(int scale, int ratio)
+        private int median;
+        private int hitungMedian(int X, int Y, int[,] block)
         {
-            int median=-1;
-            for (int konter = 0; konter <this.sizeX; konter += ratio*scale)
+            List<int> data= new List<int>();
+            for (int konter1=0; konter1 < X; konter1++)
             {
-                for (int konter2 = 0; konter2 < this.sizeY; konter2 += ratio * scale)
+                for (int konter2 = 0; konter2 < Y; konter2++)
                 {
-                    if (median == -1)
+                    data.Add(block[konter1,konter2]);
+                }
+            }
+            data.Sort();
+            return data[data.Count/2];
+        }
+
+        public void filterMatrix(int scale, int multiplier)
+        {
+            for (int konter1 = 0; konter1 < this.sizeX; konter1 += scale*multiplier)
+            {
+                for (int konter2 = 0; konter2 < this.sizeY; konter2 += scale*multiplier)
+                {
+                    int median = hitungMedian(konter1, konter2, this.Matrix);
+                    for (int konter3 = 0; konter3 < konter1 + scale * multiplier; konter3++)
                     {
-                        median = (int)hitungMean(konter, konter + (ratio * scale), konter2, konter2 + (ratio * scale));
+                        for (int konter4 = 0; konter4 < konter2 + scale * multiplier; konter4++)
+                        {
+                            Matrix[konter3, konter4] = median;
+                        }
                     }
-                    median = median / (this.sizeX * this.sizeY);
-                    Matrix[konter, konter2] = median;
                 }
             }
         }
