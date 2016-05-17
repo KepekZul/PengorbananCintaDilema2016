@@ -10,3 +10,15 @@ D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\FaceDetection\FaceDetection\obj\Debug\Fa
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.exe.config
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.exe
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.pdb
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.exe
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.pdb
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.dll
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Imaging.dll
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Math.dll
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.xml
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Imaging.xml
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Math.xml
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.csprojResolveAssemblyReference.cache
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Main.resources
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Properties.Resources.resources
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.csproj.GenerateResource.Cache

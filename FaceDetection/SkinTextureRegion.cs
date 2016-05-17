@@ -12,6 +12,7 @@ namespace FaceDetection
     {
 
         public Bitmap imgSource { set; get;}
+        public Bitmap imgTexture;
         public Bitmap imgResult;
 
         private double Hue(Color color)
@@ -24,17 +25,45 @@ namespace FaceDetection
             return Math.Sqrt(Math.Pow(color.G, 2) + Math.Pow(color.B, 2));
         }
 
-        private double MedianFilter(Color color)
-        {
-            return 0;
-        }
+       
 
         
 
+        private Bitmap textureAmplitude(Bitmap bitmap)
+        {
+            /*
+               Process Median Filtering
+            */
+            Bitmap bitMedian1= bitmap;
+            Bitmap bitText = new Bitmap(bitmap.Width, bitmap.Height);
+            for(int i=0; i < bitmap.Width; i++)
+            {
+                for(int j = 0; j < bitmap.Height; j++)
+                {
+                    Color colorA = bitmap.GetPixel(i, j);
+                    Color colorB = bitMedian1.GetPixel(i, j);
+                    int res = Math.Abs(colorA.R - colorB.R);
+                    Color colorC = Color.FromArgb(res, 0, 0);
+                    bitText.SetPixel(i, j, colorC);
+                }
+            }
+            /*
+                Median Filter 2
+            */
+
+            Bitmap bitMedian2 = bitText;
+            return bitMedian2;
+
+        }
+
+        private double MAD(Color color)
+        {
+
+            return 0;
+        }
+
         private Bitmap Process()
         {
-            Median median = new Median();
-            median.ApplyInPlace(image);
             int flag;
             this.imgResult = new Bitmap(imgSource.Width, imgSource.Height);
             for (int iterX = 0; iterX < this.imgSource.Width; iterX++)
@@ -43,11 +72,12 @@ namespace FaceDetection
                 {
                     flag = 0;
                     Color color = this.imgSource.GetPixel(iterX, iterY);
-                    if (this.MedianFilter(color) < 4.5 && 120 < Hue(color) && Hue(color) < 160 && 10 < Saturation(color) && Saturation(color) < 60)
+                    Color colorb = imgTexture.GetPixel(iterX, iterY);
+                    if ( colorb.R < 4.5 && 120 < Hue(color) && Hue(color) < 160 && 10 < Saturation(color) && Saturation(color) < 60)
                     {
                         flag = 1;
                     }
-                    if (this.MedianFilter(color) < 4.5 && 150 < Hue(color) && Hue(color) < 180 && Saturation(color) > 20 && Saturation(color) < 80)
+                    if (colorb.R < 4.5 && 150 < Hue(color) && Hue(color) < 180 && Saturation(color) > 20 && Saturation(color) < 80)
                     {
                         flag = 1;
                     }
