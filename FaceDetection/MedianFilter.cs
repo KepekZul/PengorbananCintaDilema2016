@@ -9,7 +9,50 @@ namespace FaceDetection
 {
     class MedianFilter
     {
-        private int[,] Matrix;
+        public static Bitmap Median(Bitmap source, int size)
+        {
+            Bitmap res = new Bitmap(source.Width, source.Height);
+
+            Random random = new Random();
+            int ApetureMin = -(size / 2);
+            int ApetureMax = size / 2;
+            for(int i = 0; i < res.Width; i++)
+            {
+                for(int j = 0; j < res.Height; j++)
+                {
+                    List<int> RValues = new List<int>();
+                    List<int> GValues = new List<int>();
+                    List<int> BValues = new List<int>();
+                    for(int i2 = ApetureMin; i2 < ApetureMax; i2++)
+                    {
+                        int tempX = i + i2;
+                        if(tempX>=0 && tempX < res.Width)
+                        {
+                            for(int j2 = ApetureMin; j2 < ApetureMax; j2++)
+                            {
+                                int tempY = j + j2;
+                                if(tempY >= 0 && tempY < res.Height)
+                                {
+                                    Color tempColor = source.GetPixel(tempX, tempY);
+                                    RValues.Add(tempColor.R);
+                                    GValues.Add(tempColor.G);
+                                    BValues.Add(tempColor.B);
+
+                                }
+                            }
+                        }
+
+                    }
+                    RValues.Sort();
+                    GValues.Sort();
+                    BValues.Sort();
+                    Color MedianPixel = Color.FromArgb(RValues[RValues.Count / 2], GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
+                    res.SetPixel(i, j, MedianPixel);
+                }
+            }
+            return res;
+        }
+        /*private int[,] Matrix;
         private int sizeX;
         private int sizeY;
         public void setMatrix(int x, int y, int[,] source)
@@ -56,6 +99,6 @@ namespace FaceDetection
                     }
                 }
             }
-        }
+        }*/
     }
 }

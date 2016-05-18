@@ -39,13 +39,16 @@ namespace FaceDetection
 
         private void Process_Click(object sender, EventArgs e)
         {
-            this.GambarOlah = this.GambarAsli;
+            this.GambarOlah = FaceDetection.MedianFilter.Median(this.GambarAsli,5);
+            Hasil.Image = this.GambarOlah;
+            Hasil.SizeMode = PictureBoxSizeMode.Zoom;
+            /*this.GambarOlah = this.GambarAsli;
             FaceDetection.lRgBy Olah = new lRgBy();
             Olah.GambarSumber = this.GambarOlah;
             Olah.convertToiRgBy();
             this.GambarOlah = Olah.GambarOlah;
             Hasil.Image = this.GambarOlah;
-            Hasil.SizeMode = PictureBoxSizeMode.Zoom;
+            Hasil.SizeMode = PictureBoxSizeMode.Zoom;*/
         }
     }
 }

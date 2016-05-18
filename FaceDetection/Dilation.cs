@@ -10,12 +10,13 @@ namespace FaceDetection
 {
     class Dilation
     {
-        public Bitmap Dilate(Bitmap source)
+        public static Bitmap Dilate(Bitmap source)
         {
             Bitmap temp = new Bitmap(source.Width, source.Height);
 
             BitmapData sourceData = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            BitmapData destData = source.LockBits(new Rectangle(0, 0, temp.Width, temp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            BitmapData destData = temp.LockBits(new Rectangle(0, 0, temp.Width, temp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            
 
             byte[,] sElement = new byte[5, 5]
             {

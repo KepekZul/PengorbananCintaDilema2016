@@ -56,12 +56,7 @@ namespace FaceDetection
 
         }
 
-        private double MAD(Color color)
-        {
-
-            return 0;
-        }
-
+       
         private Bitmap Process()
         {
             int flag;
