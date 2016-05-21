@@ -23,22 +23,22 @@ namespace FaceDetection
             RG = new Double[Width, Height];
             BY = new Double[Width, Height];
         }
-        public int lOperation(double x){
-            return Convert.ToInt32(105*(Math.Log(x+1,10)));
+        public double lOperation(double x){
+            return 105*(Math.Log(x+1,10));
         }
         private double I(double R, double G, double B)
         {
             return ((lOperation(R) + lOperation(G) + lOperation(B)) / 3);
         }
 
-        private double Rg(double R, Double G)
+        private double Rg(double R, double I)
         {
-            int hasil =Convert.ToInt32(lOperation(R) - lOperation(G)>0);
+            double hasil =(lOperation(R) - I);
             return (hasil>0?hasil:0 );
         }
-        private double By(double R, Double G, Double B)
+        private double By(double B, double R, double I)
         {
-            int hasil= lOperation(B) -((lOperation(G) + lOperation(R)) / 2);
+            double hasil= lOperation(B) -((I + lOperation(R)) / 2);
             return (hasil > 0 ? hasil : 0);
         }
         public void convertToiRgBy(){
@@ -49,8 +49,8 @@ namespace FaceDetection
                 {
                     Color Warna = GambarSumber.GetPixel(iterX, iterY);
                     this.L[iterX, iterY] = I(Warna.R, Warna.G, Warna.B);
-                    this.RG[iterX, iterY] = Rg(Warna.R, Warna.G);
-                    this.BY[iterX, iterY] = By(Warna.R, Warna.G, Warna.B);
+                    this.RG[iterX, iterY] = Rg(Warna.R, this.L[iterX, iterY]);
+                    this.BY[iterX, iterY] = By(Warna.B, Warna.R, this.L[iterX, iterY]);
                     Color WarnaIRgBy = Color.FromArgb( Convert.ToInt32(this.L[iterX,iterY]), Convert.ToInt32( this.RG[iterX,iterY]), Convert.ToInt32( this.BY[iterX,iterY]));
                     this.GambarOlah.SetPixel(iterX, iterY, WarnaIRgBy);
                 }

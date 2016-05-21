@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dilation.cs" />
-    <Compile Include="SkinTextureRegion.cs" />
+    <Compile Include="TextureMap.cs" />
     <Compile Include="lRgBy.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
