@@ -9,128 +9,35 @@ namespace FaceDetection
 {
     class MedianFilter
     {
-        public static Bitmap Median(Bitmap source, int size)
+        public static Tools.Raw[,] Median(Tools.Raw[,] raw, int Width, int Height, int size)
         {
-            Bitmap res = new Bitmap(source.Width, source.Height);
-            double scale = (source.Width + source.Height) / 320;
+            double scale = (Width + Height) / 320;
             size = (int)(size *scale) ;
             Random random = new Random();
             int ApetureMin = -(size / 2);
             int ApetureMax = size / 2;
-            for(int i = 0; i < res.Width; i++)
+            Tools.Raw[,] riw = new Tools.Raw[Width, Height];
+            for (int i = 0; i < Width; i++)
             {
-                for(int j = 0; j < res.Height; j++)
+                for(int j = 0; j < Height; j++)
                 {
-                    List<int> RValues = new List<int>();
-                    List<int> GValues = new List<int>();
-                    List<int> BValues = new List<int>();
+                    List<double> RValues = new List<double>();
+                    List<double> GValues = new List<double>();
+                    List<double> BValues = new List<double>();
                     for(int i2 = ApetureMin; i2 < ApetureMax; i2++)
                     {
                         int tempX = i + i2;
-                        if(tempX>=0 && tempX < res.Width)
+                        if(tempX>=0 && tempX < Width)
                         {
                             for(int j2 = ApetureMin; j2 < ApetureMax; j2++)
                             {
                                 int tempY = j + j2;
-                                if(tempY >= 0 && tempY < res.Height)
+                                if(tempY >= 0 && tempY < Height)
                                 {
-                                    Color tempColor = source.GetPixel(tempX, tempY);
-                                    RValues.Add(tempColor.R);
-                                    GValues.Add(tempColor.G);
-                                    BValues.Add(tempColor.B);
-
-                                }
-                            }
-                        }
-
-                    }
-                    RValues.Sort();
-                    GValues.Sort();
-                    BValues.Sort();
-                    Color MedianPixel = Color.FromArgb(RValues[RValues.Count / 2], GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
-                    res.SetPixel(i, j, MedianPixel);
-                }
-            }
-            return res;
-        }
-        public static Bitmap Median1(Bitmap source, int size)
-        {
-            Bitmap res = new Bitmap(source.Width, source.Height);
-            double scale = (source.Width + source.Height) / 320;
-            size = (int)(size * scale);
-            Random random = new Random();
-            int ApetureMin = -(size / 2);
-            int ApetureMax = size / 2;
-            int R = 0 ;
-            for (int i = 0; i < res.Width; i++)
-            {
-                for (int j = 0; j < res.Height; j++)
-                {
-                    
-                    List<int> GValues = new List<int>();
-                    List<int> BValues = new List<int>();
-                    Color keep = source.GetPixel(i, j);
-                    for (int i2 = ApetureMin; i2 < ApetureMax; i2++)
-                    {
-                        int tempX = i + i2;
-                        if (tempX >= 0 && tempX < res.Width)
-                        {
-                            for (int j2 = ApetureMin; j2 < ApetureMax; j2++)
-                            {
-                                
-                                int tempY = j + j2;
-                                if (tempY >= 0 && tempY < res.Height)
-                                {
-                                    Color tempColor = source.GetPixel(tempX, tempY);
                                     
-                                    GValues.Add(tempColor.G);
-                                    BValues.Add(tempColor.B);
-
-                                }
-                            }
-                        }
-
-                    }
-                    
-                    GValues.Sort();
-                    BValues.Sort();
-                    
-                    Color MedianPixel = Color.FromArgb(keep.R, GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
-                    res.SetPixel(i, j, MedianPixel);
-                }
-            }
-            return res;
-        }
-
-        public static Bitmap Median2(Bitmap source, int size)
-        {
-            Bitmap res = new Bitmap(source.Width, source.Height);
-            double scale = (source.Width + source.Height) / 320;
-            size = (int)(size * scale);
-            Random random = new Random();
-            int ApetureMin = -(size / 2);
-            int ApetureMax = size / 2;
-            int G = 0;
-            int B = 0;
-            for (int i = 0; i < res.Width; i++)
-            {
-                for (int j = 0; j < res.Height; j++)
-                {
-
-                    Color keep = source.GetPixel(i, j);
-                    List<int> RValues = new List<int>();
-                    for (int i2 = ApetureMin; i2 < ApetureMax; i2++)
-                    {
-                        int tempX = i + i2;
-                        if (tempX >= 0 && tempX < res.Width)
-                        {
-                            for (int j2 = ApetureMin; j2 < ApetureMax; j2++)
-                            {
-                                int tempY = j + j2;
-                                if (tempY >= 0 && tempY < res.Height)
-                                {
-                                    Color tempColor = source.GetPixel(tempX, tempY);
-                                    RValues.Add(tempColor.R);
+                                    RValues.Add(raw[tempX,tempY].R);
+                                    GValues.Add(raw[tempX,tempY].G);
+                                    BValues.Add(raw[tempX,tempY].B);
 
                                 }
                             }
@@ -138,13 +45,114 @@ namespace FaceDetection
 
                     }
                     RValues.Sort();
-                   
-
-                    Color MedianPixel = Color.FromArgb(RValues[RValues.Count/2], keep.G, keep.B);
-                    res.SetPixel(i, j, MedianPixel);
+                    GValues.Sort();
+                    BValues.Sort();
+                    riw[i, j].R = RValues[RValues.Count / 2];
+                    riw[i, j].G = GValues[GValues.Count / 2];
+                    riw[i, j].B = BValues[BValues.Count / 2];
+                    //Color MedianPixel = Color.FromArgb(RValues[RValues.Count / 2], GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
+                    //res.SetPixel(i, j, MedianPixel);
                 }
             }
-            return res;
+            //return res;
+            return riw;
+        }
+
+
+        public static Tools.Raw[,] Median1(Tools.Raw[,] raw, int Width, int Height, int size)
+        {
+            double scale = (Width + Height) / 320;
+            size = (int)(size * scale);
+            Random random = new Random();
+            int ApetureMin = -(size / 2);
+            int ApetureMax = size / 2;
+            Tools.Raw[,] riw = new Tools.Raw[Width, Height];
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    List<double> RValues = new List<double>();
+                    
+                    for (int i2 = ApetureMin; i2 < ApetureMax; i2++)
+                    {
+                        int tempX = i + i2;
+                        if (tempX >= 0 && tempX < Width)
+                        {
+                            for (int j2 = ApetureMin; j2 < ApetureMax; j2++)
+                            {
+                                int tempY = j + j2;
+                                if (tempY >= 0 && tempY < Height)
+                                {
+
+                                    RValues.Add(raw[tempX, tempY].R);
+                                    
+
+                                }
+                            }
+                        }
+
+                    }
+                    RValues.Sort();
+                    
+                    riw[i, j].R = RValues[RValues.Count / 2];
+                    riw[i, j].G = raw[i, j].G;
+                    riw[i, j].B = raw[i, j].B;
+                    //Color MedianPixel = Color.FromArgb(RValues[RValues.Count / 2], GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
+                    //res.SetPixel(i, j, MedianPixel);
+                }
+            }
+            //return res;
+            return riw;
+        }
+
+        public static Tools.Raw[,] Median2(Tools.Raw[,] raw, int Width, int Height, int size)
+        {
+            double scale = (Width + Height) / 320;
+            size = (int)(size * scale);
+            Random random = new Random();
+            int ApetureMin = -(size / 2);
+            int ApetureMax = size / 2;
+            Tools.Raw[,] riw = new Tools.Raw[Width, Height];
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    
+                    List<double> GValues = new List<double>();
+                    List<double> BValues = new List<double>();
+                    for (int i2 = ApetureMin; i2 < ApetureMax; i2++)
+                    {
+                        int tempX = i + i2;
+                        if (tempX >= 0 && tempX < Width)
+                        {
+                            for (int j2 = ApetureMin; j2 < ApetureMax; j2++)
+                            {
+                                int tempY = j + j2;
+                                if (tempY >= 0 && tempY < Height)
+                                {
+
+                                    
+                                    GValues.Add(raw[tempX, tempY].G);
+                                    BValues.Add(raw[tempX, tempY].B);
+
+                                }
+                            }
+                        }
+
+                    }
+                   
+                    GValues.Sort();
+                    BValues.Sort();
+                    
+                    riw[i, j].R = raw[i, j].R;
+                    riw[i, j].G = GValues[GValues.Count / 2];
+                    riw[i, j].B = BValues[BValues.Count / 2];
+                    //Color MedianPixel = Color.FromArgb(RValues[RValues.Count / 2], GValues[GValues.Count / 2], BValues[BValues.Count / 2]);
+                    //res.SetPixel(i, j, MedianPixel);
+                }
+            }
+            //return res;
+            return riw;
         }
 
         /*private int[,] Matrix;

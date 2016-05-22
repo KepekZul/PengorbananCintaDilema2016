@@ -9,128 +9,157 @@ using AForge.Imaging.Filters;
 namespace FaceDetection
 {
 
-    
+
     class TextureMap
     {
 
         public static void Logger(String lines)
         {
-            
-        }
-// public Bitmap imgSource { set; get;}
-        
 
-        private static double Hue(Color color)
+        }
+        // public Bitmap imgSource { set; get;}
+
+
+        private static double Hue(double x, double y)
         {
             //Console.WriteLine("fssdagaas");
-            double tmp = (Math.Atan2(color.B/255,color.G/255)*(180/ Math.PI));
-// Logger(tmp.ToString());
+            double tmp = (Math.Atan2(x, y) * (180 / Math.PI));
+            // Logger(tmp.ToString());
             return tmp;
         }
 
-        private static double Saturation(Color color)
+        private static double Saturation(double x, double y)
         {
-            return Math.Sqrt(Math.Pow(color.G, 2) + Math.Pow(color.B, 2));
+            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
 
-       
 
-        
-        
-        public static Bitmap huehue(Bitmap bitmap)
+
+
+
+        public static void huehue(Tools.Raw[,] rew, int Width, int Height)
         {
-            Bitmap bitText = new Bitmap(bitmap.Width, bitmap.Height);
-            for (int i = 0; i < bitmap.Width; i++)
+            Tools.Raw[,] riw = new Tools.Raw[Width, Height];
+            for (int i = 0; i < Width; i++)
             {
-                for (int j = 0; j < bitmap.Height; j++)
+                for (int j = 0; j < Height; j++)
                 {
-                    Color color = bitmap.GetPixel(i, j);
-                    float a = color.GetHue();
-                    int b = Convert.ToInt32(a);
-                    Color colorC = Color.FromArgb(b,b,b);
-                    bitText.SetPixel(i, j, colorC);
+                    riw[i, j].R = Hue(rew[i, j].G, rew[i, j].B);
+                    riw[i, j].G = 0;
+                    riw[i, j].B = 0;
                 }
             }
-            return bitText;
+            Tools.Writer(riw, Width, Height);
         }
 
-       
-        public static Bitmap Process(Bitmap imgSource)
+        public static Tools.Raw[,] Copy(Tools.Raw[,] rew, int Width, int Height)
         {
-            Bitmap bitmap = imgSource;
-            double scale1 = (bitmap.Width + bitmap.Height) / 320;
-            scale1 = Math.Round(scale1);
-            int scale = Convert.ToInt32(scale1);
-                        
-            Bitmap bitMedian2 = FaceDetection.MedianFilter.Median1(bitmap, 4);
-
-
-            Bitmap bitMedian1 = FaceDetection.MedianFilter.Median2(bitmap, 8);
-            System.IO.StreamWriter file = new System.IO.StreamWriter("f:\\test.csv", true);
-            System.IO.StreamWriter file1 = new System.IO.StreamWriter("f:\\test1.csv", true);
-            System.IO.StreamWriter file2 = new System.IO.StreamWriter("f:\\test2.csv", true);
-            Bitmap bitText = new Bitmap(bitmap.Width, bitmap.Height);
-            for (int i = 0; i < bitmap.Width; i++)
+            Tools.Raw[,] riw = new Tools.Raw[Width, Height];
+            for (int i = 0; i < Width; i++)
             {
-                for (int j = 0; j < bitmap.Height; j++)
+                for (int j = 0; j < Height; j++)
                 {
-                    Color colorA = bitMedian1.GetPixel(i, j);
-                    Color colorB = bitmap.GetPixel(i, j);
-                    int res = Math.Abs(colorA.R - colorB.R);
-                    file.Write(res + ",");
-                    file1.Write(colorB.G + ",");
-                    file2.Write(colorB.B+ ",");
-                    Color colorC = Color.FromArgb(res, colorB.G, colorB.B);
-                    bitText.SetPixel(i, j, colorC);
+                    riw[i, j] = rew[i, j];
                 }
-                file.WriteLine("");
-                file1.WriteLine("");
-                file2.WriteLine("");
             }
-            /*
-                Median Filter 2
-            */
-            
-            file.Close();
-            file1.Close();
-            file2.Close();
-            Bitmap bitMedian3 = FaceDetection.MedianFilter.Median2(bitText, 12);
-            //return bitMedian3;
-            
+            return riw;
+            //Tools.Writer(riw, Width, Height);
+        }
+
+
+        public static Tools.Raw[,] Process(Tools.Raw[,] raw, int Width, int Height)
+        {
+
+            Tools.Raw[,] raw2 = FaceDetection.MedianFilter.Median2(raw, Width, Height, 4);
+
+
+            Tools.Raw[,] raw1 = Copy(raw2, Width, Height);
+            raw1 = FaceDetection.MedianFilter.Median1(raw1, Width, Height, 8);
+
+
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    double resz = Math.Abs(raw1[i, j].R - raw[i, j].R);
+                    raw1[i, j].R = resz;
+                }
+
+            }
+
+            raw1 = FaceDetection.MedianFilter.Median1(raw1, Width, Height, 12);
+            //Tools.Writer(raw, Width, Height);
+            //Tools.Writer(raw1, Width, Height);
+
             int flag;
 
-            
-            Bitmap imgResult = new Bitmap(imgSource.Width, imgSource.Height);
-            for (int iterX = 0; iterX < imgSource.Width; iterX++)
+            Tools.Raw[,] res = new Tools.Raw[Width, Height];
+
+            for (int i = 0; i < Width; i++)
             {
-                for (int iterY = 0; iterY < imgSource.Height; iterY++)
+                for (int j = 0; j < Height; j++)
                 {
                     flag = 0;
-                    Color colora = bitMedian3.GetPixel(iterX, iterY);
-                    Color color = bitmap.GetPixel(iterX, iterY);
 
-                    if ( colora.R < 4.5 && 120 < color.GetHue() && color.GetHue() < 160 && 10 < Saturation(color) && Saturation(color) < 60)
+
+                    if (raw1[i, j].R < 4.5 && 120 < Hue(raw2[i, j].G, raw2[i, j].B) && Hue(raw2[i, j].G, raw2[i, j].B) < 160 && 10 < Saturation(raw2[i, j].G, raw2[i, j].B) && Saturation(raw2[i, j].G, raw2[i, j].B) < 60)
                     {
                         flag = 1;
                     }
-                    if (colora.R < 4.5 && 150 < color.GetHue() && color.GetHue() < 180 && Saturation(color) > 20 && Saturation(color) < 80)
+                    if (raw1[i, j].R < 4.5 && 150 < Hue(raw2[i, j].G, raw2[i, j].B) && Hue(raw2[i, j].G, raw2[i, j].B) < 180 && Saturation(raw2[i, j].G, raw2[i, j].B) > 20 && Saturation(raw2[i, j].G, raw2[i, j].B) < 80)
                     {
                         flag = 1;
                     }
                     if (flag == 1)
                     {
-                        //Console.Write("dasfdfs");
-                        color = Color.FromArgb(255, 255, 255);
+          
+                        res[i, j].R = res[i, j].G = res[i, j].B = 255;
+
                     }
-                    else{
-                        color = Color.FromArgb(0, 0, 0);
+                    else {
+                        res[i, j].R = res[i, j].G = res[i, j].B = 0;
                     }
-                    imgResult.SetPixel(iterX, iterY, color);
+
                 }
             }
 
-            return imgResult;
-            
+            Bitmap bitmap= Tools.Builder(res,Width, Height);
+            for(int i = 0; i < 5; i++)
+            {
+                Bitmap bitmap1 = FaceDetection.Dilation.Dilate(bitmap);
+                bitmap = bitmap1;
+            }
+
+            res = Tools.Converter(bitmap);
+            Tools.Raw[,] raaw = new Tools.Raw[Width, Height];
+            Tools.Writer(bitmap);
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    flag = 0;
+
+
+                    if (res[i, j].R !=0 && 110 < Hue(raw2[i, j].G, raw2[i, j].B) && Hue(raw2[i, j].G, raw2[i, j].B) < 180 && 0 < Saturation(raw2[i, j].G, raw2[i, j].B) && Saturation(raw2[i, j].G, raw2[i, j].B) < 130)
+                    {
+                        flag = 1;
+                    }
+                    
+                    if (flag == 1)
+                    {
+
+                        raaw[i, j].R = raaw[i, j].G = raaw[i, j].B = 255;
+
+                    }
+                    else {
+                        raaw[i, j].R = raaw[i, j].G = raaw[i, j].B = 0;
+                    }
+
+                }
+            }
+
+            return raaw;
+
         }
 
     }

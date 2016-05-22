@@ -10,19 +10,9 @@ namespace FaceDetection
     class lRgBy
     {
         public Bitmap GambarSumber;
-        public Bitmap GambarOlah;
-        public Double[,] L;
-        public Double[,] RG;
-        public Double[,] BY;
-        private void initGambarOlah()
-        {
-            this.GambarOlah = new Bitmap(this.GambarSumber.Width, this.GambarSumber.Height);
-            int Width = this.GambarSumber.Width;
-            int Height = this.GambarSumber.Height;
-            L = new Double[Width, Height];
-            RG = new Double[Width, Height];
-            BY = new Double[Width, Height];
-        }
+                
+        public Tools.Raw[,] raw;
+        
         public double lOperation(double x){
             return 105*(Math.Log(x+1,10));
         }
@@ -33,26 +23,23 @@ namespace FaceDetection
 
         private double Rg(double R, double I)
         {
-            double hasil =(lOperation(R) - I);
-            return (hasil>0?hasil:0 );
+            return (lOperation(R) - I); 
         }
         private double By(double B, double R, double I)
         {
-            double hasil= lOperation(B) -((I + lOperation(R)) / 2);
-            return (hasil > 0 ? hasil : 0);
+            return lOperation(B) - ((I + lOperation(R)) / 2); ;
         }
         public void convertToiRgBy(){
-            initGambarOlah();
+            raw = new Tools.Raw[GambarSumber.Width, GambarSumber.Height];
             for (int iterX = 0; iterX < this.GambarSumber.Width; iterX++)
             {
                 for (int iterY = 0; iterY < this.GambarSumber.Height; iterY++)
                 {
                     Color Warna = GambarSumber.GetPixel(iterX, iterY);
-                    this.L[iterX, iterY] = I(Warna.R, Warna.G, Warna.B);
-                    this.RG[iterX, iterY] = Rg(Warna.R, this.L[iterX, iterY]);
-                    this.BY[iterX, iterY] = By(Warna.B, Warna.R, this.L[iterX, iterY]);
-                    Color WarnaIRgBy = Color.FromArgb( Convert.ToInt32(this.L[iterX,iterY]), Convert.ToInt32( this.RG[iterX,iterY]), Convert.ToInt32( this.BY[iterX,iterY]));
-                    this.GambarOlah.SetPixel(iterX, iterY, WarnaIRgBy);
+                    raw[iterX, iterY].R = I(Warna.R, Warna.G, Warna.B);
+                    raw[iterX, iterY].G = Rg(Warna.R, this.raw[iterX, iterY].R);
+                    raw[iterX, iterY].B = By(Warna.B, Warna.R, this.raw[iterX, iterY].R);
+                   
                 }
             }
         }

@@ -16,6 +16,7 @@ namespace FaceDetection
         Bitmap GambarAsli;
         int Scale;
         Bitmap GambarOlah;
+        Tools.Raw[,] raw;
         string PathGambar = "";
         public Main()
         {
@@ -31,37 +32,34 @@ namespace FaceDetection
             PathGambar = Pilih.FileName;
             if (PathGambar != "")
             {
-                Bitmap tmp= (Bitmap)Image.FromFile(PathGambar);
+                Bitmap tmp = (Bitmap)Image.FromFile(PathGambar);
                 //GambarAsli = 
-                Bitmap gambar = new Bitmap(tmp.Width, tmp.Height, PixelFormat.Format32bppRgb);
-                for(int i = 0; i < tmp.Width; i++)
-                {
-                    for(int j = 0; j < tmp.Height; j++)
-                    {
-                        Color pix = tmp.GetPixel(i, j);
-                        //Color newC = Color.FromArgb(pix.R, 0,0);
-                        gambar.SetPixel(i, j, pix);
-                    }
-                }
-                GambarAsli = gambar;
+
+                Tools.Raw[,] raw = Tools.Converter(tmp);
+                GambarAsli = tmp;
                 Asal.Image = GambarAsli;
                 Asal.SizeMode = PictureBoxSizeMode.Zoom;
-                Scale = (GambarAsli.Width + GambarAsli.Height) / 320;
+                //Scale = (GambarAsli.Width + GambarAsli.Height) / 320;
             }
         }
 
         private void Process_Click(object sender, EventArgs e)
         {
-            
+
             this.GambarOlah = this.GambarAsli;
+            //Tools.Writer(this.GambarOlah);
             FaceDetection.lRgBy Olah = new lRgBy();
             Olah.GambarSumber = this.GambarOlah;
+            Olah.raw = this.raw;
             Olah.convertToiRgBy();
+            //Tools.Writer(Olah.raw, GambarOlah.Width, GambarOlah.Height);
+            this.raw = FaceDetection.TextureMap.Process(Olah.raw, GambarOlah.Width, GambarOlah.Height);
+            Bitmap bitmap = FaceDetection.Tools.Builder(this.raw, GambarOlah.Width, GambarOlah.Height);
             //this.GambarOlah = Olah.GambarOlah;
-            this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);
-            Hasil.Image = Olah.GambarOlah;
+            //this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);
+            Hasil.Image = bitmap;
             Hasil.SizeMode = PictureBoxSizeMode.Zoom;
-            
+
         }
     }
 }
