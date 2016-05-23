@@ -9,10 +9,10 @@ namespace FaceDetection
 {
     class BoundaryTracing
     {
-        public List<KeyValuePair<int, int>> BoundaryLine;
         private byte[,] matrix;
         private int lebar;
         private int tinggi;
+        public Queue<KeyValuePair<int,int>> holes = new Queue<KeyValuePair<int,int>>();
         public BoundaryTracing(Bitmap sumber)
         {
             ImageConverter converter = new ImageConverter();
@@ -20,9 +20,85 @@ namespace FaceDetection
             this.lebar = sumber.Width;
             this.tinggi = sumber.Height;
         }
-        private void recursiveFloodHere(int x, int y)
+        private void BFSflood(int x, int y)
         {
-
+            Queue<KeyValuePair<int, int>> kueue = new Queue<KeyValuePair<int, int>>();
+            kueue.Enqueue(new KeyValuePair<int, int>(x, y));
+            while (kueue.Count != 0)
+            {
+                KeyValuePair<int, int> temp;
+                temp = kueue.Dequeue();
+                int x2=temp.Key, y2=temp.Value;
+                if (this.matrix[temp.Key, temp.Value] != 5)
+                {
+                    if (this.matrix[x2, y2] == 0)
+                    {
+                        this.holes.Enqueue(temp);
+                    }
+                    if (this.matrix[x2, y2] != 5)
+                    {
+                        this.matrix[x2, y2] = 5;
+                        if (x2 - 1 > 0)
+                        {
+                            if (y2 - 1 > 0)
+                            {
+                                if (this.matrix[x2 - 1, y2 - 1] != 5)
+                                {
+                                    kueue.Enqueue(new KeyValuePair<int, int>(x2 - 1, y2 - 1));
+                                }
+                            }
+                            if (y2 + 1 < this.tinggi)
+                            {
+                                if (this.matrix[x2 - 1, y2 + 1] != 5)
+                                {
+                                    kueue.Enqueue(new KeyValuePair<int, int>(x2 - 1, y2 + 1));
+                                }
+                            }
+                            if (this.matrix[x2 - 1, y2] != 5)
+                            {
+                                kueue.Enqueue(new KeyValuePair<int, int>(x2 - 1, y2));
+                            }
+                        }
+                        if (x2 + 1 < this.lebar)
+                        {
+                            if (y2 - 1 > 0)
+                            {
+                                if (this.matrix[x2 + 1, y2 - 1] != 5)
+                                {
+                                    kueue.Enqueue(new KeyValuePair<int, int>(x2 + 1, y2 - 1));
+                                }
+                            }
+                            if (y2 + 1 < this.tinggi)
+                            {
+                                if (this.matrix[x2 + 1, y2 + 1] != 5)
+                                {
+                                    kueue.Enqueue(new KeyValuePair<int, int>(x2 + 1, y2 + 1));
+                                }
+                            }
+                            if (this.matrix[x2 + 1, y2] != 5)
+                            {
+                                kueue.Enqueue(new KeyValuePair<int, int>(x2 + 1, y2));
+                            }
+                        }
+                        if (y2 - 1 > 0)
+                        {
+                            if (this.matrix[x2, y2 - 1] != 5)
+                            {
+                                kueue.Enqueue(new KeyValuePair<int, int>(x2, y2-1));
+                            }
+                        }
+                        if (y2 + 1 < this.tinggi)
+                        {
+                            if (this.matrix[x2, y2 + 1] != 5)
+                            {
+                                kueue.Enqueue(new KeyValuePair<int, int>(x2, y2 + 1));
+                            }
+                        }
+                    }
+                    this.matrix[x2, y2] = 5;
+                }
+            }
+            return;
         }
 
         private int cekBeda(int pre, int nex)
@@ -65,17 +141,20 @@ namespace FaceDetection
                 {
                     this.matrix[tf[i, 0], tf[i, 1]] = 5;
                     recursiveBoundaryHere(tf[i, 0], tf[i, 1]);
+                    break;
                 }
                 else if (spot == 2)//recurs ke nex
                 {
                     this.matrix[tf[i + 1, 0], tf[i + 1, 1]] = 5;
                     recursiveBoundaryHere(tf[i + 1, 0], tf[i + 1, 1]);
+                    break;
                 }
                 else
                 {
                     return;
                 }
             }
+            return;
         }
         public void traceBoundary()
         {
@@ -85,6 +164,7 @@ namespace FaceDetection
                 {
                     if (this.matrix[x,y]==255)
                     {
+                        this.matrix[x, y] = 5;
                         recursiveBoundaryHere(x, y);
                     }
                 }

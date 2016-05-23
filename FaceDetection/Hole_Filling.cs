@@ -12,7 +12,6 @@ namespace FaceDetection
         private Bitmap GambarAsal;
         private int lebar;
         private int tinggi;
-        private List<KeyValuePair<byte,byte>> flagged;
         public void setGambar(Bitmap gambar)
         {
             GambarAsal = gambar;
