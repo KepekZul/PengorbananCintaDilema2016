@@ -132,7 +132,7 @@ namespace FaceDetection
 
             res = Tools.Converter(bitmap);
             Tools.Raw[,] raaw = new Tools.Raw[Width, Height];
-            Tools.Writer(bitmap);
+            //Tools.Writer(bitmap);
             for (int i = 0; i < Width; i++)
             {
                 for (int j = 0; j < Height; j++)

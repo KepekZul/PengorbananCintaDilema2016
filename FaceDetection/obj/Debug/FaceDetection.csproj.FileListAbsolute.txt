@@ -22,3 +22,18 @@ C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDet
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Main.resources
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Properties.Resources.resources
 C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.csproj.GenerateResource.Cache
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.exe.config
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.exe
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.pdb
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.exe
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\FaceDetection.pdb
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.dll
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Imaging.dll
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Math.dll
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.xml
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Imaging.xml
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\bin\Debug\AForge.Math.xml
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.csprojResolveAssemblyReference.cache
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Main.resources
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.Properties.Resources.resources
+D:\Documents\Kuliah\Kuliah smt 6\PCD\FP\PengorbananCintaDilema2016\FaceDetection\obj\Debug\FaceDetection.csproj.GenerateResource.Cache

@@ -57,7 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoundaryTracing.cs" />
+    <Compile Include="convertToGrey.cs" />
     <Compile Include="Dilation.cs" />
+    <Compile Include="Hole_Filling.cs" />
     <Compile Include="TextureMap.cs" />
     <Compile Include="lRgBy.cs" />
     <Compile Include="Main.cs">

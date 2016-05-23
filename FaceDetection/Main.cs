@@ -14,7 +14,6 @@ namespace FaceDetection
     public partial class Main : Form
     {
         Bitmap GambarAsli;
-        int Scale;
         Bitmap GambarOlah;
         Tools.Raw[,] raw;
         string PathGambar = "";
@@ -55,9 +54,14 @@ namespace FaceDetection
             //Tools.Writer(Olah.raw, GambarOlah.Width, GambarOlah.Height);
             this.raw = FaceDetection.TextureMap.Process(Olah.raw, GambarOlah.Width, GambarOlah.Height);
             Bitmap bitmap = FaceDetection.Tools.Builder(this.raw, GambarOlah.Width, GambarOlah.Height);
+            Bitmap GreyImage;
+            convertToGrey convertImage = new convertToGrey();
+            GreyImage = convertImage.convert(this.GambarAsli);
+            Bitmap MULTIPLIED;
+            MULTIPLIED = new Bitmap( convertImage.multiply(GreyImage, bitmap));
             //this.GambarOlah = Olah.GambarOlah;
             //this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);
-            Hasil.Image = bitmap;
+            Hasil.Image = MULTIPLIED;
             Hasil.SizeMode = PictureBoxSizeMode.Zoom;
 
         }
