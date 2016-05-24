@@ -4,19 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace FaceDetection
 {
     class BoundaryTracing
     {
-        private byte[,] matrix;
+        public byte[,] matrix;
         private int lebar;
         private int tinggi;
         public Queue<KeyValuePair<int,int>> holes = new Queue<KeyValuePair<int,int>>();
         public BoundaryTracing(Bitmap sumber)
         {
-            ImageConverter converter = new ImageConverter();
-            matrix = (byte[,])converter.ConvertTo(sumber, typeof(byte[]));
+            matrix = new byte[sumber.Width, sumber.Height];
+            for (int x = 0; x < sumber.Width; x++)
+            {
+                for (int y = 0; y < sumber.Height; y++)
+                {
+                    if (sumber.GetPixel(x, y) == Color.FromArgb(255,255,255))
+                    {
+                        this.matrix[x, y] = 255;
+                        Trace.WriteLine("oke");
+                        Trace.Flush();
+                    }
+                    else
+                    {
+                        this.matrix[x, y] = 0;
+                    }
+                }
+            }
             this.lebar = sumber.Width;
             this.tinggi = sumber.Height;
         }
@@ -103,18 +119,23 @@ namespace FaceDetection
 
         private int cekBeda(int pre, int nex)
         {
-            if (pre == 255)
+            if (pre != nex)
             {
-                return 1;
-            }
-            else if (nex == 255)
-            {
-                return 2;
+                if (pre == 255)
+                {
+                    return 1;
+                }
+                else if (nex == 255)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             else
-            {
-                return 0;
-            }
+                return -1;
         }
 
         private void recursiveBoundaryHere(int x, int y)
@@ -134,22 +155,22 @@ namespace FaceDetection
             };
             for(int i=0; i<8; i++)
             {
-                prev = this.matrix[tf[i, 0], tf[i, 1]];
-                next = this.matrix[tf[i + 1, 0], tf[i + 1, 1]];
+                prev = this.matrix[x+tf[i, 0], y+tf[i, 1]];
+                next = this.matrix[x+tf[i + 1, 0], y+tf[i + 1, 1]];
                 int spot=cekBeda(prev,next);
                 if(spot==1)//recurs ke pre
                 {
-                    this.matrix[tf[i, 0], tf[i, 1]] = 5;
-                    recursiveBoundaryHere(tf[i, 0], tf[i, 1]);
+                    this.matrix[x+tf[i, 0], y+tf[i, 1]] = 5;
+                    recursiveBoundaryHere(x+tf[i, 0], y+tf[i, 1]);
                     break;
                 }
                 else if (spot == 2)//recurs ke nex
                 {
-                    this.matrix[tf[i + 1, 0], tf[i + 1, 1]] = 5;
-                    recursiveBoundaryHere(tf[i + 1, 0], tf[i + 1, 1]);
+                    this.matrix[x+tf[i + 1, 0], y+tf[i + 1, 1]] = 5;
+                    recursiveBoundaryHere(x+tf[i + 1, 0], y+tf[i + 1, 1]);
                     break;
                 }
-                else
+                else if(spot==0)
                 {
                     return;
                 }
@@ -167,8 +188,30 @@ namespace FaceDetection
                         this.matrix[x, y] = 5;
                         recursiveBoundaryHere(x, y);
                     }
+                    if (this.matrix[x, y] == 5)
+                    {
+                        BFSflood(x, y);
+                    }
                 }
             }
+        }
+        public Bitmap transformImage(Bitmap src)
+        {
+            for (int x = 0; x < src.Width; x++)
+            {
+                for (int y = 0; y < src.Height; y++)
+                {
+                    if (this.matrix[x, y] == 5)
+                    {
+                        src.SetPixel(x, y, Color.White);
+                    }
+                    else
+                    {
+                        src.SetPixel(x, y, Color.Black);
+                    }
+                }
+            }
+            return src;
         }
     }
 }

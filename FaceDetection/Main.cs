@@ -54,14 +54,17 @@ namespace FaceDetection
             //Tools.Writer(Olah.raw, GambarOlah.Width, GambarOlah.Height);
             this.raw = FaceDetection.TextureMap.Process(Olah.raw, GambarOlah.Width, GambarOlah.Height);
             Bitmap bitmap = FaceDetection.Tools.Builder(this.raw, GambarOlah.Width, GambarOlah.Height);
-            Bitmap GreyImage;
+            BoundaryTracing trace = new BoundaryTracing(bitmap);
+            trace.traceBoundary();
+            bitmap = new Bitmap(trace.transformImage(bitmap));
+            /*Bitmap GreyImage;
             convertToGrey convertImage = new convertToGrey();
             GreyImage = convertImage.convert(this.GambarAsli);
             Bitmap MULTIPLIED;
             MULTIPLIED = new Bitmap( convertImage.multiply(GreyImage, bitmap));
             //this.GambarOlah = Olah.GambarOlah;
-            //this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);
-            Hasil.Image = MULTIPLIED;
+            //this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);*/
+            Hasil.Image = bitmap;
             Hasil.SizeMode = PictureBoxSizeMode.Zoom;
 
         }
