@@ -14,18 +14,16 @@ namespace FaceDetection
         private int lebar;
         private int tinggi;
         public Queue<KeyValuePair<int,int>> holes = new Queue<KeyValuePair<int,int>>();
-        public BoundaryTracing(Bitmap sumber)
+        public void init(Bitmap sumber)
         {
             matrix = new byte[sumber.Width, sumber.Height];
             for (int x = 0; x < sumber.Width; x++)
             {
                 for (int y = 0; y < sumber.Height; y++)
                 {
-                    if (sumber.GetPixel(x, y) == Color.FromArgb(255,255,255))
+                    if (sumber.GetPixel(x, y) == Color.FromArgb(255, 255, 255))
                     {
                         this.matrix[x, y] = 255;
-                        Trace.WriteLine("oke");
-                        Trace.Flush();
                     }
                     else
                     {
@@ -179,18 +177,20 @@ namespace FaceDetection
         }
         public void traceBoundary()
         {
-            for (int x = 0; x <this.lebar ; x++)
+            for (int y = 0; y <this.tinggi ; y++)
             {
-                for (int y = 0; y <this.tinggi ; y++)
+                for (int x = 0; x <this.lebar ; x++)
                 {
                     if (this.matrix[x,y]==255)
                     {
-                        this.matrix[x, y] = 5;
+                        //this.matrix[x, y] = 5;
                         recursiveBoundaryHere(x, y);
+                        //return;
                     }
-                    if (this.matrix[x, y] == 5)
+                    if (this.matrix[x, y] == 255)
                     {
                         BFSflood(x, y);
+                        return;
                     }
                 }
             }
@@ -203,9 +203,12 @@ namespace FaceDetection
                 {
                     if (this.matrix[x, y] == 5)
                     {
+                        src.SetPixel(x, y, Color.Red);
+                    }else
+                    if (this.matrix[x,y]==255)
+                    {
                         src.SetPixel(x, y, Color.White);
-                    }
-                    else
+                    }else
                     {
                         src.SetPixel(x, y, Color.Black);
                     }
