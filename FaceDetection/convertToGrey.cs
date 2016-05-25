@@ -27,6 +27,7 @@ namespace FaceDetection
             }
             return gambarBaru;
         }
+
         public Bitmap multiply(Bitmap a, Bitmap mask)
         {
             Color warnaBaru;

@@ -16,7 +16,6 @@ namespace FaceDetection
 
             BitmapData sourceData = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             BitmapData destData = temp.LockBits(new Rectangle(0, 0, temp.Width, temp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            
 
             byte[,] sElement = new byte[5, 5]
             {
@@ -30,26 +29,24 @@ namespace FaceDetection
             int size = 5;
             byte max, clrValue;
             int radius = size / 2;
-            
-
             unsafe
             {
                 int ir, jr;
-                for (int j=radius; j<destData.Height - radius; j++)
+                for (int j = radius; j < destData.Height - radius; j++)
                 {
                     byte* ptr = (byte*)sourceData.Scan0 + (j * sourceData.Stride);
                     byte* dstPtr = (byte*)destData.Scan0 + (j * sourceData.Stride);
 
-                    for(int i= radius; i<destData.Width - radius; i++)
+                    for (int i = radius; i < destData.Width - radius; i++)
                     {
                         max = 0;
                         clrValue = 0;
 
-                        for(int ej = 0; ej < 5; ej++)
+                        for (int ej = 0; ej < 5; ej++)
                         {
                             ir = ej - radius;
                             byte* tempPtr = (byte*)sourceData.Scan0 + ((j + ir) * sourceData.Stride);
-                            for(int ei = 0; ei < 5; ei++)
+                            for (int ei = 0; ei < 5; ei++)
                             {
                                 jr = ei - radius;
                                 clrValue = (byte)((tempPtr[i * 3 + jr] +
@@ -59,7 +56,7 @@ namespace FaceDetection
                                     if (sElement[ej, ei] != 0)
                                         max = clrValue;
                                 }
-                                 
+
                             }
 
                         }

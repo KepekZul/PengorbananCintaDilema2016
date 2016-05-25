@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AForge.Imaging.Filters;
 
+
 namespace FaceDetection
 {
     public partial class Main : Form
@@ -25,6 +26,7 @@ namespace FaceDetection
 
         private void pilihGambar_Click(object sender, EventArgs e)
         {
+            
             OpenFileDialog Pilih = new OpenFileDialog();
             Pilih.FileName = "";
             Pilih.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
@@ -33,43 +35,102 @@ namespace FaceDetection
             if (PathGambar != "")
             {
                 Bitmap tmp = (Bitmap)Image.FromFile(PathGambar);
-                //GambarAsli = 
-
                 Tools.Raw[,] raw = Tools.Converter(tmp);
                 GambarAsli = tmp;
                 Asal.Image = GambarAsli;
                 Asal.SizeMode = PictureBoxSizeMode.Zoom;
-                //Scale = (GambarAsli.Width + GambarAsli.Height) / 320;
+                
             }
         }
 
         private void Process_Click(object sender, EventArgs e)
         {
-
             this.GambarOlah = this.GambarAsli;
-            //Tools.Writer(this.GambarOlah);
+      
             FaceDetection.lRgBy Olah = new lRgBy();
             Olah.GambarSumber = this.GambarOlah;
             Olah.raw = this.raw;
-            Olah.convertToiRgBy();
-            //Tools.Writer(Olah.raw, GambarOlah.Width, GambarOlah.Height);
-            this.raw = FaceDetection.TextureMap.Process(Olah.raw, GambarOlah.Width, GambarOlah.Height);
-            Bitmap bitmap = FaceDetection.Tools.Builder(this.raw, GambarOlah.Width, GambarOlah.Height);
-            Grayscale abu = new Grayscale(1, 1, 1);
-            Threshold tres = new Threshold();
-            bitmap=abu.Apply(bitmap);
-            bitmap = tres.Apply(bitmap);
-            FillHoles ini = new FillHoles();
-            bitmap=ini.Apply(bitmap);
-
-            Bitmap GreyImage;
+            Olah.convertToiRgBy(); //Convert to Channel IRgBy
+            
+            this.raw = FaceDetection.TextureMap.Process(Olah.raw, GambarOlah.Width, GambarOlah.Height); //Texturing, Detect Skin
+            Bitmap bitmap = FaceDetection.Tools.Builder(this.raw, GambarOlah.Width, GambarOlah.Height); //Build from array to Bitmap
+     
             convertToGrey convertImage = new convertToGrey();
-            GreyImage = convertImage.convert(this.GambarAsli);
-            Bitmap MULTIPLIED;
-            MULTIPLIED = new Bitmap( convertImage.multiply(GreyImage, bitmap));
-            //this.GambarOlah = Olah.GambarOlah;
-            //this.GambarOlah = FaceDetection.TextureMap.Process(Olah.GambarOlah);
-            Hasil.Image = bitmap;
+            Bitmap GreyImage = convertImage.convert(this.GambarAsli);
+            Bitmap MULTIPLIED = new Bitmap(convertImage.multiply(GreyImage, bitmap)); //Selecting Skin with real picture
+            bitmap = FaceDetection.Histogram.CalculateHistogram(MULTIPLIED);
+            bitmap = FaceDetection.Thresholding.Threshold(bitmap, 40, 240);
+            
+            //detecting Object
+            ConnectedComponentsLabeling ccl = new ConnectedComponentsLabeling();
+            ccl.FilterBlobs = true;
+            ccl.MinWidth=40;
+            bitmap = ccl.Apply(bitmap);
+            
+            //Memutihkan BLok warna
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int j = 0; j < bitmap.Height; j++)
+                {
+                    Color color = bitmap.GetPixel(i, j);
+                    if (color.R != 0 || color.G != 0 || color.B != 0)
+                    {
+                        bitmap.SetPixel(i, j, Color.White);
+                    }
+                    else
+                    {
+                        bitmap.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+
+            bitmap = FaceDetection.Dilation.Dilate(bitmap);
+            MULTIPLIED = new Bitmap(convertImage.multiply(this.GambarAsli, bitmap));
+           
+            int x1,x2,y1,y2;
+            x1 = y1 = 255;
+            x2 = y2 = 0;
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int j = 0; j < bitmap.Height; j++)
+                {
+                    Color x = MULTIPLIED.GetPixel(i, j);
+                    if (x.R != 0 && x.G !=0 && x.B !=0)
+                    {
+                        if (j <= y1)
+                        {
+                            y1 = j;
+                        }
+                        if (i >= x2)
+                        {
+                            x2 = i;
+                        }
+                        if (j >= y2)
+                        {
+                            y2 = j;
+                        }
+                        if (i <= x1)
+                        {
+                            x1 = i;
+                        }
+                    }
+                }
+            }
+            
+            
+            Bitmap result = new Bitmap(GambarAsli);
+            for (int i = x1; i <= x2; i++)
+            {
+                for (int j = y1; j <= y2; j++)
+                {
+                    result.SetPixel(x1, j, Color.FromArgb(255, 255, 255));
+                    result.SetPixel(x2, j, Color.FromArgb(255, 255, 255));
+                }
+                result.SetPixel(i,y1, Color.FromArgb(255, 255, 255));
+                result.SetPixel(i,y2, Color.FromArgb(255, 255, 255));
+            }
+            
+            Hasil.Image = result;
             Hasil.SizeMode = PictureBoxSizeMode.Zoom;
 
         }

@@ -13,18 +13,14 @@ namespace FaceDetection
     class TextureMap
     {
 
-        public static void Logger(String lines)
-        {
-
-        }
-        // public Bitmap imgSource { set; get;}
+       
 
 
         private static double Hue(double x, double y)
         {
-            //Console.WriteLine("fssdagaas");
+            
             double tmp = (Math.Atan2(x, y) * (180 / Math.PI));
-            // Logger(tmp.ToString());
+            
             return tmp;
         }
 
@@ -63,7 +59,7 @@ namespace FaceDetection
                 }
             }
             return riw;
-            //Tools.Writer(riw, Width, Height);
+            
         }
 
 
@@ -88,13 +84,13 @@ namespace FaceDetection
             }
 
             raw1 = FaceDetection.MedianFilter.Median1(raw1, Width, Height, 12);
-            //Tools.Writer(raw, Width, Height);
-            //Tools.Writer(raw1, Width, Height);
+            ;
 
             int flag;
 
             Tools.Raw[,] res = new Tools.Raw[Width, Height];
 
+            //Marking the skin
             for (int i = 0; i < Width; i++)
             {
                 for (int j = 0; j < Height; j++)
@@ -122,7 +118,8 @@ namespace FaceDetection
 
                 }
             }
-
+            
+            //Build the raw skin
             Bitmap bitmap= Tools.Builder(res,Width, Height);
             for(int i = 0; i < 5; i++)
             {
@@ -132,7 +129,7 @@ namespace FaceDetection
 
             res = Tools.Converter(bitmap);
             Tools.Raw[,] raaw = new Tools.Raw[Width, Height];
-            //Tools.Writer(bitmap);
+            
             for (int i = 0; i < Width; i++)
             {
                 for (int j = 0; j < Height; j++)

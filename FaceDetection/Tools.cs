@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,26 @@ namespace FaceDetection
             public double G;
             public double B;
         }
+
+        public static Bitmap convert8pp(Bitmap gambar)
+        {
+            Color warnaAsli;
+            Bitmap gambarBitmap = new Bitmap(gambar);
+            Bitmap gambarBaru = new Bitmap(gambarBitmap.Width, gambarBitmap.Height, PixelFormat.Format16bppArgb1555);
+
+            ColorPalette color = gambarBaru.Palette;
+            for (int i = 0; i < gambarBitmap.Width; i++)
+            {
+                for (int j = 0; j < gambarBitmap.Height; j++)
+                {
+                    warnaAsli = gambarBitmap.GetPixel(i, j);
+                    gambarBaru.SetPixel(i,j, warnaAsli);        
+                }
+            }
+            
+            return gambarBaru;
+        }
+
         public static Bitmap Builder(Raw[,] raw, int width, int height)
         {
             Bitmap bitmap = new Bitmap(width, height);
@@ -37,7 +58,6 @@ namespace FaceDetection
                 for (int j = 0; j < bitmap.Height; j++)
                 {
                     Color color = bitmap.GetPixel(i, j);
-                    
                     raw[i, j].R = color.R;
                     raw[i, j].G = color.G;
                     raw[i, j].B = color.B;
@@ -106,8 +126,6 @@ namespace FaceDetection
             {
                 for (int j = 0; j < height; j++)
                 {
-                    
-
                     file.Write(raw[i,j].R + ",");
                     file1.Write(raw[i,j].G + ",");
                     file2.Write(raw[i,j].B + ",");

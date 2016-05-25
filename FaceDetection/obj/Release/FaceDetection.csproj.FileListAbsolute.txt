@@ -1,0 +1,3 @@
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Release\FaceDetection.Main.resources
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Release\FaceDetection.Properties.Resources.resources
+C:\Users\haqiqi\Dropbox\Project\Visual Studio\PengorbananCintaDilema2016\FaceDetection\obj\Release\FaceDetection.csproj.GenerateResource.Cache
